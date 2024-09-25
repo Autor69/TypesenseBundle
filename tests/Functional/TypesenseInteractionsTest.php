@@ -17,6 +17,7 @@ use ACSEO\TypesenseBundle\Tests\Functional\Entity\Author;
 use ACSEO\TypesenseBundle\Tests\Functional\Entity\Book;
 use ACSEO\TypesenseBundle\Transformer\DoctrineToTypesenseTransformer;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -95,7 +96,7 @@ class TypesenseInteractionsTest extends KernelTestCase
         );
     }
 
-    public function importCommandProvider()
+    public static function importCommandProvider()
     {
         return [
             "insert 10 books one by one" => [
@@ -386,7 +387,7 @@ class TypesenseInteractionsTest extends KernelTestCase
      */
     private function getmockedEventCreate($book): \PHPUnit\Framework\MockObject\MockObject
     {
-        $lifeCycleEvent = $this->createMock(LifecycleEventArgs::class);
+        $lifeCycleEvent = $this->createMock(\Doctrine\Persistence\Event\LifecycleEventArgs::class);
         $lifeCycleEvent->method('getObject')->willReturn($book);
 
         return $lifeCycleEvent;

@@ -8,6 +8,8 @@ use ACSEO\TypesenseBundle\Manager\CollectionManager;
 use ACSEO\TypesenseBundle\Manager\DocumentManager;
 use ACSEO\TypesenseBundle\Transformer\DoctrineToTypesenseTransformer;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class TypesenseIndexer
@@ -25,7 +27,7 @@ class TypesenseIndexer
     public function __construct(
         CollectionManager $collectionManager,
         DocumentManager $documentManager,
-        DoctrineToTypesenseTransformer $transformer
+        DoctrineToTypesenseTransformer $transformer,
     ) {
         $this->collectionManager = $collectionManager;
         $this->documentManager   = $documentManager;
@@ -140,21 +142,21 @@ class TypesenseIndexer
 
     private function entityIsNotManaged($entity)
     {
-        $entityClassname = ClassUtils::getClass($entity);
+        $entityClassname = $entity::class;
 
         return !in_array($entityClassname, array_values($this->managedClassNames), true);
     }
 
     private function getCollectionName($entity)
     {
-        $entityClassname = ClassUtils::getClass($entity);
+        $entityClassname = $entity::class;
 
         return array_search($entityClassname, $this->managedClassNames, true);
     }
 
     private function getCollectionKey($entity)
     {
-        $entityClassname = ClassUtils::getClass($entity);
+        $entityClassname = $entity::class;
 
         foreach ($this->collectionManager->getCollectionDefinitions() as $key => $def) {
             if ($def['entity'] === $entityClassname) {
