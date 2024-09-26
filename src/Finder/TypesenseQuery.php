@@ -36,9 +36,9 @@ class TypesenseQuery
      *
      * @param [type] $maxHits
      */
-    public function maxHits($maxHits): self
+    public function limitHits($maxHits): self
     {
-        return $this->addParameter('max_hits', $maxHits);
+        return $this->addParameter('limit_hits', $maxHits);
     }
 
     /**

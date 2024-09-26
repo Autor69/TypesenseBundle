@@ -130,7 +130,7 @@ class TypesenseInteractionsTest extends KernelTestCase
         $bookFinder = new CollectionFinder($collectionClient, $em, $bookDefinition);
         $query = new TypesenseQuery('Nicolas', 'author');
 
-        $query->maxHits($nbBooks < 250 ? $nbBooks : 250);
+        $query->limitHits($nbBooks < 250 ? $nbBooks : 250);
         $query->perPage($nbBooks < 250 ? $nbBooks : 250);
         
         $results    = $bookFinder->rawQuery($query)->getResults();
